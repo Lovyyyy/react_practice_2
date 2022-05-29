@@ -1,13 +1,27 @@
 import React from "react";
-import Practice from "./pages/Practice";
-import Circle from "./components/Props_practice";
+import Count from "./components/State";
+import Circle from "./components/Props";
+import Form from "./components/Form";
+import styled from "styled-components";
 
+const Wrapper = styled.div`
+  background-color: ${(props) => props.theme.bgColor};
+`;
+const Title = styled.h1`
+  color: ${(props) => props.theme.textColor};
+`;
 function App() {
   return (
-    <div className="App">
-      <Circle text="text, bgColor" bgColor="cornflowerblue" />
-      <Circle text="text,bgColor,borderColor" bgColor="cyan" borderColor="cornflowerblue" />
-      <Circle />
+    <div>
+      <Wrapper>
+        <Title> HELLO WORLD </Title>
+
+        <Circle text="text, bgColor" bgColor="cornflowerblue" />
+        <Circle text="text,bgColor,borderColor" bgColor="cyan" borderColor="cornflowerblue" />
+        <Circle />
+        <Count />
+        <Form />
+      </Wrapper>
     </div>
   );
 }

@@ -25,10 +25,10 @@ interface ContainerProps {
 // };
 
 const Container = styled.div<ContainerProps>`
-  width: 200px;
-  height: 200px;
+  width: 100px;
+  height: 100px;
   background-color: ${(props) => props.bgColor};
-  border-radius: 100px;
+  border-radius: 50px;
   border: 5px solid ${(props) => props.borderColor};
 `;
 
@@ -81,29 +81,29 @@ interface 내부의 속성은 모두 사용이 되어야 한다
 필수적으로 사용 할 필요가 없는 속성에 한해서는 ?를 붙임으로써 해결이 가능하다
 
 !!! 정리를 해봅시다 
-App.tsx 에서는 Circle 컴포넌트를 import 하여 사용한다
-사용과 함께 Circle 컴포넌트에 props로 bgColor와 borderColor를 키로 가지는 객체를 전달한다.
-typescript 에서는 props로 전달 된 값들에 대해서도 type의 설정이 필요하며
-객체의 속성을 설정하기 위해서 inteface 객체를 사용한다.
+// App.tsx 에서는 Circle 컴포넌트를 import 하여 사용한다
+// 사용과 함께 Circle 컴포넌트에 props로 bgColor와 borderColor를 키로 가지는 객체를 전달한다.
+// typescript 에서는 props로 전달 된 값들에 대해서도 type의 설정이 필요하며
+// 객체의 속성을 설정하기 위해서 inteface 객체를 사용한다.
 
-interface 객체명 {key:value, } 를 통해서 객체의 type을 지정 할 수 있으며, 
-key는 props의 key 값, value는 해당 값의 타입의 입력을 요한다. 
-interface 내의 키:type이 설정 된 경우 해당 key값은 required 상태이나, 
-key값의 뒤에 ?를 붙여줌으로써 optional 설정으로 변경 할 수 있다
-optional 설정은 정해진 타입을 사용하거나 입력되지 않은 경우 undefined 가 된다.
+// interface 객체명 {key:value, } 를 통해서 객체의 type을 지정 할 수 있으며, 
+// key는 props의 key 값, value는 해당 값의 타입의 입력을 요한다. 
+// interface 내의 키:type이 설정 된 경우 해당 key값은 required 상태이나, 
+// key값의 뒤에 ?를 붙여줌으로써 optional 설정으로 변경 할 수 있다
+// optional 설정은 정해진 타입을 사용하거나 입력되지 않은 경우 undefined 가 된다.
 
-App.tsx => Circle.tsx => Container 로 추가로 하위 컴포넌트로 전달이 되는 상황
-상위 Circle 컴포넌트는 borderColor가 optional 설정이나, 
-하위 Container 컴포넌트는 borderColor가 required 설정인 경우
+// App.tsx => Circle.tsx => Container 로 추가로 하위 컴포넌트로 전달이 되는 상황
+// 상위 Circle 컴포넌트는 borderColor가 optional 설정이나, 
+// 하위 Container 컴포넌트는 borderColor가 required 설정인 경우
 
-위 예시의 최상위 App 컴포넌트에서는 borderColor를 Circle 에게 전달 할 필요가 없으나
-중간 컴포넌트인 Circle은 하위 컴포넌트인 Container 에게 해당 속성을 꼭 전달해야만 한다.
-만약 Circle 에서 Container로 borderColor를 전달하지 않는 다면 (Circle 에서 Container 컴포넌트에 borderColor를 설정하지 않는 경우 )
-오류가 발생하게 되며 코드가 정상적으로 실행되지 않는다
-! 이는 하위 컴포넌트인 Container의 props 중 borderColor가 required 한 속성이기 때문이다. 
+// 위 예시의 최상위 App 컴포넌트에서는 borderColor를 Circle 에게 전달 할 필요가 없으나
+// 중간 컴포넌트인 Circle은 하위 컴포넌트인 Container 에게 해당 속성을 꼭 전달해야만 한다.
+// 만약 Circle 에서 Container로 borderColor를 전달하지 않는 다면 (Circle 에서 Container 컴포넌트에 borderColor를 설정하지 않는 경우 )
+// 오류가 발생하게 되며 코드가 정상적으로 실행되지 않는다
+// ! 이는 하위 컴포넌트인 Container의 props 중 borderColor가 required 한 속성이기 때문이다. 
 
-이를 막기 위해서는  Container 컴포넌트의 borderColor 속성을 optional로 처리해주거나
-Circle 컴포넌트에서 Container의 borderColor 속성을 지정
+// 이를 막기 위해서는  Container 컴포넌트의 borderColor 속성을 optional로 처리해주거나
+// Circle 컴포넌트에서 Container의 borderColor 속성을 지정
 
 
 
