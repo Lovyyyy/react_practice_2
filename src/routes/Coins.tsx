@@ -1,13 +1,44 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
+
 const Title = styled.h1`
-  color: ${(props) => props.theme.textColor};
+  font-size: 48px;
+  color: ${(props) => props.theme.accentColor};
 `;
 
-const Container = styled.div``;
+const Container = styled.div`
+  padding: 0px 20px;
+`;
 
-const Header = styled.div``;
-const Coin = styled.h1``;
-const CoinsList = styled.li``;
+const Header = styled.header`
+  height: 15vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const CoinsList = styled.ul``;
+
+const Coin = styled.li`
+  background-color: white;
+  color: ${(props) => props.theme.textColor};
+  height: 40px;
+  align-items: center;
+  padding: 0 15px 0 15px;
+  line-height: 40px;
+  border-radius: 15px;
+  margin-bottom: 10px;
+
+  a {
+    transition: color 0.2s ease-in;
+    display: block;
+  }
+  &:hover {
+    a {
+      color: ${(props) => props.theme.accentColor};
+    }
+  }
+`;
 
 const coins = [
   {
@@ -43,11 +74,13 @@ const Coins = () => {
   return (
     <Container>
       <Header>
-        <Title> COINS </Title>;
+        <Title> COINS </Title>
       </Header>
       <CoinsList>
         {coins.map((coin) => (
-          <Coin key={coin.id}> {coin.name} </Coin>
+          <Coin key={coin.id}>
+            <Link to={coin.name}> {coin.name} &rarr; </Link>
+          </Coin>
         ))}
       </CoinsList>
     </Container>
