@@ -1,8 +1,27 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { Route, Routes, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 
+const Title = styled.h1`
+  font-size: 48px;
+  color: ${(props) => props.theme.accentColor};
+`;
+const Loader = styled.span`
+  text-align: center;
+  display: block;
+`;
+const Container = styled.div`
+  padding: 0px 20px;
+  max-width: 480px;
+  margin: 0 auto;
+`;
+const Header = styled.header`
+  height: 15vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 const Overview = styled.div`
   display: flex;
   justify-content: space-between;
@@ -150,9 +169,35 @@ const Coin = () => {
     onLoadCoinPrice();
   }, []);
   return (
-    <div>
-      <div>Coin : {state.name}</div>
-    </div>
+    <Container>
+      <Header>
+        <Title>Coin : {state.name}</Title>
+      </Header>
+      <>
+        <Overview>
+          <OverviewItem>
+            <span>Rank : {info?.rank} </span>
+          </OverviewItem>
+          <OverviewItem>
+            <span> Symbol : {info?.symbol} </span>
+          </OverviewItem>
+          <OverviewItem>
+            <span> Open Source: {info?.open_source ? "Yes" : "No"} </span>
+          </OverviewItem>
+        </Overview>
+        <Description>{info?.description}</Description>
+        <Overview>
+          <OverviewItem>
+            <span>Total Suply:</span>
+            <span>{price?.total_supply}</span>
+          </OverviewItem>
+          <OverviewItem>
+            <span>Max Supply:</span>
+            <span>{price?.max_supply}</span>
+          </OverviewItem>
+        </Overview>
+      </>
+    </Container>
   );
 };
 
