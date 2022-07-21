@@ -2,8 +2,8 @@ import { DefaultTheme } from "styled-components";
 
 export const theme: DefaultTheme = {
   bgColor: "cornflowerblue",
-  textColor: "red",
-  accentColor: "magenta",
+  textColor: "white",
+  accentColor: "cyan",
 };
 
 /*

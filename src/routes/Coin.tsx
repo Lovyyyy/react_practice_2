@@ -164,6 +164,7 @@ const Coin = () => {
   const chartMatch = useMatch("/:coinId/chart");
   console.log("priceMatch : ", priceMatch);
   console.log("chartMatch : ", chartMatch);
+  console.log("chartMatch?.pattern.caseSensitive, :", chartMatch?.pattern.caseSensitive);
 
   const { state } = useLocation() as LocationInterface;
   // API의 인터페이스를 만들고 state에 저장해주기
@@ -226,8 +227,12 @@ const Coin = () => {
         </OverviewItem>
       </Overview>
       <Tabs>
-        <Link to={`/${coinId}/price`}>Price</Link>
-        <Link to={`/${coinId}/chart`}>Chart</Link>
+        <Tab isActive={priceMatch !== null}>
+          <Link to={`/${coinId}/price`}>Price</Link>
+        </Tab>
+        <Tab isActive={chartMatch !== null}>
+          <Link to={`/${coinId}/chart`}>Chart</Link>
+        </Tab>
       </Tabs>
       <Outlet />
       {/* <Routes>
@@ -241,6 +246,8 @@ const Coin = () => {
 export default Coin;
 
 /*
+
+useMatch("params/url ")
 
 Nested Route 
 => 라우트 내부의 라우트 
@@ -266,4 +273,16 @@ URL 을 통해서 원하는 페이지로 직접 연결을 할 수 있다.
 
 https://reactrouter.com/docs/en/v6/getting-started/overview#nested-routes
 
+
+
+
+
+WHAT IS REACT QUERY ? 
+
+- 리액트 쿼리가 뭐냐구요!!!!
+- 우리가 실행하고 있는 로직을 축소시켜준다. 
+- 최상위에서 Queryprovider 컴포넌트를 만들어서 감싸주기
+- Queryprovider는 client를 props로 가지며,
+- const quearyClient = new QuearyClient() 로 새로운 클라이언트 객체를 생성해서 프롭스로 넣어줘야함 
+- 
 */
