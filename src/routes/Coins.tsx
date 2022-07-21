@@ -99,7 +99,7 @@ const Coins = () => {
                 <Icon
                   src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}
                 />
-                {coin.name} &rarr;{" "}
+                {coin.name} &rarr;
               </Link>
             </Coin>
           ))}

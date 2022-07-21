@@ -1,7 +1,7 @@
 const Chart = () => {
   return (
     <div>
-      <div>CHART </div>
+      <div> CHART </div>
     </div>
   );
 };

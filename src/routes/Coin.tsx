@@ -1,6 +1,8 @@
 import axios from "axios";
+import Price from "./Price";
+import Chart from "./Chart ";
 import { useEffect, useState } from "react";
-import { Route, Routes, useLocation, useParams } from "react-router-dom";
+import { Route, Routes, useLocation, useMatch, useParams, Outlet, Link } from "react-router-dom";
 import styled from "styled-components";
 
 const Title = styled.h1`
@@ -41,7 +43,28 @@ const OverviewItem = styled.div`
   }
 `;
 const Description = styled.p`
-  margin: 20px 0px;
+  margin: 20px 20px;
+`;
+
+const Tabs = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  margin: 25px 10px;
+  gap: 10px;
+`;
+
+const Tab = styled.span<{ isActive: boolean }>`
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 400;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 7px 0px;
+  border-radius: 10px;
+  color: ${(props) => (props.isActive ? props.theme.accentColor : props.theme.textColor)};
+  a {
+    display: block;
+  }
 `;
 
 interface LocationInterface {
@@ -136,9 +159,15 @@ const Coin = () => {
   const { coinId } = useParams();
   const [info, setInfo] = useState<InfoData>();
   const [price, setPriceInfo] = useState<PriceData>();
-  // API의 인터페이스를 만들고 state에 저장해주기
+  const [loading, setLoading] = useState(false);
+  const priceMatch = useMatch("/:coinId/price");
+  const chartMatch = useMatch("/:coinId/chart");
+  console.log("priceMatch : ", priceMatch);
+  console.log("chartMatch : ", chartMatch);
 
   const { state } = useLocation() as LocationInterface;
+  // API의 인터페이스를 만들고 state에 저장해주기
+
   // location 객체에서 state 값 구조분해?
   //  타입값ㅇ르 정해주는데 as 는 어떤 기능인지 파악하기
 
@@ -151,6 +180,7 @@ const Coin = () => {
       .then((res) => {
         console.log("info : ", res.data);
         setInfo(res.data);
+        setLoading(true);
       })
       .catch((err) => console.log(err));
   };
@@ -171,34 +201,69 @@ const Coin = () => {
   return (
     <Container>
       <Header>
-        <Title>Coin : {state.name}</Title>
+        <Title>{state?.name ? state.name : info?.name}</Title>
       </Header>
-      <>
-        <Overview>
-          <OverviewItem>
-            <span>Rank : {info?.rank} </span>
-          </OverviewItem>
-          <OverviewItem>
-            <span> Symbol : {info?.symbol} </span>
-          </OverviewItem>
-          <OverviewItem>
-            <span> Open Source: {info?.open_source ? "Yes" : "No"} </span>
-          </OverviewItem>
-        </Overview>
-        <Description>{info?.description}</Description>
-        <Overview>
-          <OverviewItem>
-            <span>Total Suply:</span>
-            <span>{price?.total_supply}</span>
-          </OverviewItem>
-          <OverviewItem>
-            <span>Max Supply:</span>
-            <span>{price?.max_supply}</span>
-          </OverviewItem>
-        </Overview>
-      </>
+      <Overview>
+        <OverviewItem>
+          <span>Rank : {info?.rank} </span>
+        </OverviewItem>
+        <OverviewItem>
+          <span> Symbol : {info?.symbol} </span>
+        </OverviewItem>
+        <OverviewItem>
+          <span> Open Source: {info?.open_source ? "Yes" : "No"} </span>
+        </OverviewItem>
+      </Overview>
+      <Description>{info?.description}</Description>
+      <Overview>
+        <OverviewItem>
+          <span>Total Suply:</span>
+          <span>{price?.total_supply}</span>
+        </OverviewItem>
+        <OverviewItem>
+          <span>Max Supply:</span>
+          <span>{price?.max_supply}</span>
+        </OverviewItem>
+      </Overview>
+      <Tabs>
+        <Link to={`/${coinId}/price`}>Price</Link>
+        <Link to={`/${coinId}/chart`}>Chart</Link>
+      </Tabs>
+      <Outlet />
+      {/* <Routes>
+        <Route path={`/chart`} element={<Chart />} />
+        <Route path={"/price"} element={<Price />} />
+      </Routes> */}
     </Container>
   );
 };
 
 export default Coin;
+
+/*
+
+Nested Route 
+=> 라우트 내부의 라우트 
+한 페이지 내부에서 탭별로 다른 화면을 렌더링 해줄때 
+STATE로 상태관리를 통해서 렌더링 하는게 아니라, (Studylog 에서 내가 한게 이 방식 )
+URL을 통해서 렌더링을 관리할 때 사용 할 수 있음 
+URL로 하는게 더 좋은 이유는 이전 페이지에 접속해서 탭을 선택하는게 아닌
+URL 을 통해서 원하는 페이지로 직접 연결을 할 수 있다.
+실제로 studylog 에서는 todos 페이지 이후 탭을 선택해야 각 투두 / 차트를 볼 수 있음 
+차트를 바로 보거나 todos를 바로 보거나 할 수는 없음 
+ 사용 방법
+ 1. 상위 Route  내부에  Route를 추가로 만들어주기
+ 2. Outlet으로 렌더링하기 
+
+ Outlet 으로 렌더링 하길 원치 않는다면 
+
+ 1. 상위 컴포넌트 내부에 
+      <Routes>
+        <Route path={`/chart`} element={<Chart />} />
+        <Route path={"/price"} element={<Price />} />
+      </Routes>
+  처럼 하위 라우터를 만들어서 넣기 
+
+https://reactrouter.com/docs/en/v6/getting-started/overview#nested-routes
+
+*/
