@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+import { fetchCoins } from "../api";
 
 const Title = styled.h1`
   font-size: 48px;
@@ -63,6 +65,11 @@ interface CoinInterface {
 }
 
 const Coins = () => {
+  const { isLoading, data } = useQuery<CoinInterface[]>(["allCoins"], fetchCoins);
+
+  console.log(data);
+
+  /*
   const [coins, setCoins] = useState<CoinInterface[]>([]);
   const [isloading, setIsLoading] = useState(false);
   const onLoadCoinData = () => {
@@ -75,25 +82,23 @@ const Coins = () => {
       })
       .catch((err) => console.log(err));
   };
-  useEffect(() => {
-    // setTimeout(() => {
-    //   onLoadCoinData();
-    //   setIsLoading(() => true);
-    //   console.log(coins);
-    // }, 1000);
-    onLoadCoinData();
-    setIsLoading(() => true);
-    console.log(coins);
-  }, []);
+  //  */
+  // useEffect(() => {
+  //   onLoadCoinData();
+  //   setIsLoading(() => true);
+  //   console.log(coins);
+  // }, []);
 
   return (
     <Container>
       <Header>
         <Title> COINS </Title>
       </Header>
-      {isloading ? (
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : (
         <CoinsList>
-          {coins.map((coin) => (
+          {data?.map((coin) => (
             <Coin key={coin.id}>
               <Link to={coin.id} state={coin}>
                 <Icon
@@ -104,8 +109,6 @@ const Coins = () => {
             </Coin>
           ))}
         </CoinsList>
-      ) : (
-        <div>Loading...</div>
       )}
     </Container>
   );

@@ -4,6 +4,7 @@ import Chart from "./Chart ";
 import { useEffect, useState } from "react";
 import { Route, Routes, useLocation, useMatch, useParams, Outlet, Link } from "react-router-dom";
 import styled from "styled-components";
+import { useQuery } from "@tanstack/react-query";
 
 const Title = styled.h1`
   font-size: 48px;
