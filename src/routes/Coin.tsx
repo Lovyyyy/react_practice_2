@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Route, Routes, useLocation, useMatch, useParams, Outlet, Link } from "react-router-dom";
 import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
+import { fetchCoinInfo, fetchCoinPrice } from "../api";
 
 const Title = styled.h1`
   font-size: 48px;
@@ -158,75 +159,92 @@ interface PriceData {
 
 const Coin = () => {
   const { coinId } = useParams();
-  const [info, setInfo] = useState<InfoData>();
-  const [price, setPriceInfo] = useState<PriceData>();
-  const [loading, setLoading] = useState(false);
-  const priceMatch = useMatch("/:coinId/price");
-  const chartMatch = useMatch("/:coinId/chart");
-  console.log("priceMatch : ", priceMatch);
-  console.log("chartMatch : ", chartMatch);
-  console.log("chartMatch?.pattern.caseSensitive, :", chartMatch?.pattern.caseSensitive);
-
   const { state } = useLocation() as LocationInterface;
   // API의 인터페이스를 만들고 state에 저장해주기
 
   // location 객체에서 state 값 구조분해?
-  //  타입값ㅇ르 정해주는데 as 는 어떤 기능인지 파악하기
+  // 타입을 정해주는데 as 는 어떤 기능인지 파악하기
+  // const [info, setInfo] = useState<InfoData>();
+  // const [price, setPriceInfo] = useState<PriceData>();
+  // const [loading, setLoading] = useState(false);
 
-  //api.coinpaprika.com/v1/coins/btc-bitcoin
-  //api.coinpaprika.com/#operation/getCoinById
+  const priceMatch = useMatch("/:coinId/price");
+  const chartMatch = useMatch("/:coinId/chart");
+  const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(["CoinInfo", coinId], () =>
+    fetchCoinInfo(coinId)
+  );
+  const { isLoading: priceLoading, data: priceData } = useQuery<PriceData>(
+    ["CoinPrice", coinId],
+    () => fetchCoinPrice(coinId)
+  );
+  // 익명함수로 처리하는 이유
+  // argument 의 사용을 하기 위해서 익명 함수를 불러서 해당 함수를 리턴시켜서 값을 불러오기
+  // async , await 과 연결 되는 것 같음
+  // 확인 필요
+  const loading = infoLoading || priceLoading;
 
-  const onLoadCoinInfo = () => {
-    axios
-      .get(`https://api.coinpaprika.com/v1/coins/${coinId}`)
-      .then((res) => {
-        console.log("info : ", res.data);
-        setInfo(res.data);
-        setLoading(true);
-      })
-      .catch((err) => console.log(err));
-  };
-  const onLoadCoinPrice = () => {
-    axios
-      .get(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
-      .then((res) => {
-        console.log("price :", res.data);
-        setPriceInfo(res.data);
-      })
-      .catch((err) => console.log(err));
-  };
+  // isLoading 메소드를 사용하나 두 쿼리 훅 모두 동일한 명칭을 사용하게 됨
+  // 충돌을 방지하기 위해 각각의 메소드에 이름을 붙여주는건가?
+  // isLoading : 내가원하는이름  =
 
-  useEffect(() => {
-    onLoadCoinInfo();
-    onLoadCoinPrice();
-  }, []);
+  // const onLoadCoinInfo = () => {
+  //   axios
+  //     .get(`https://api.coinpaprika.com/v1/coins/${coinId}`)
+  //     .then((res) => {
+  //       console.log("info : ", res.data);
+  //       setInfo(res.data);
+  //       setLoading(true);
+  //     })
+  //     .catch((err) => console.log(err));
+  // };
+  // const onLoadCoinPrice = () => {
+  //   axios
+  //     .get(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
+  //     .then((res) => {
+  //       console.log("price :", res.data);
+  //       setPriceInfo(res.data);
+  //     })
+  //     .catch((err) => console.log(err));
+  // };
+
+  // useEffect(() => {
+  //   onLoadCoinInfo();
+  //   onLoadCoinPrice();
+  // }, []);
   return (
     <Container>
       <Header>
-        <Title>{state?.name ? state.name : info?.name}</Title>
+        <Title>{state?.name ? state.name : infoData?.name}</Title>
       </Header>
-      <Overview>
-        <OverviewItem>
-          <span>Rank : {info?.rank} </span>
-        </OverviewItem>
-        <OverviewItem>
-          <span> Symbol : {info?.symbol} </span>
-        </OverviewItem>
-        <OverviewItem>
-          <span> Open Source: {info?.open_source ? "Yes" : "No"} </span>
-        </OverviewItem>
-      </Overview>
-      <Description>{info?.description}</Description>
-      <Overview>
-        <OverviewItem>
-          <span>Total Suply:</span>
-          <span>{price?.total_supply}</span>
-        </OverviewItem>
-        <OverviewItem>
-          <span>Max Supply:</span>
-          <span>{price?.max_supply}</span>
-        </OverviewItem>
-      </Overview>
+      {loading ? (
+        <Loader>L o a d i n g . . . </Loader>
+      ) : (
+        <>
+          <Overview>
+            <OverviewItem>
+              <span>Rank : {infoData?.rank} </span>
+            </OverviewItem>
+            <OverviewItem>
+              <span> Symbol : {infoData?.symbol} </span>
+            </OverviewItem>
+            <OverviewItem>
+              <span> Open Source: {infoData?.open_source ? "Yes" : "No"} </span>
+            </OverviewItem>
+          </Overview>
+          <Description>{infoData?.description}</Description>
+          <Overview>
+            <OverviewItem>
+              <span>Total Suply:</span>
+              <span>{priceData?.total_supply}</span>
+            </OverviewItem>
+            <OverviewItem>
+              <span>Max Supply:</span>
+              <span>{priceData?.max_supply}</span>
+            </OverviewItem>
+          </Overview>
+        </>
+      )}
+
       <Tabs>
         <Tab isActive={priceMatch !== null}>
           <Link to={`/${coinId}/price`}>Price</Link>
@@ -277,13 +295,4 @@ https://reactrouter.com/docs/en/v6/getting-started/overview#nested-routes
 
 
 
-
-WHAT IS REACT QUERY ? 
-
-- 리액트 쿼리가 뭐냐구요!!!!
-- 우리가 실행하고 있는 로직을 축소시켜준다. 
-- 최상위에서 Queryprovider 컴포넌트를 만들어서 감싸주기
-- Queryprovider는 client를 props로 가지며,
-- const quearyClient = new QuearyClient() 로 새로운 클라이언트 객체를 생성해서 프롭스로 넣어줘야함 
-- 
 */
