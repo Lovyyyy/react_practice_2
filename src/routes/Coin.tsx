@@ -2,7 +2,16 @@ import axios from "axios";
 import Price from "./Price";
 import Chart from "./Chart ";
 import { useEffect, useState } from "react";
-import { Route, Routes, useLocation, useMatch, useParams, Outlet, Link } from "react-router-dom";
+import {
+  Route,
+  Routes,
+  useLocation,
+  useMatch,
+  useParams,
+  Outlet,
+  Link,
+  useOutletContext,
+} from "react-router-dom";
 import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCoinInfo, fetchCoinPrice } from "../api";
@@ -55,7 +64,7 @@ const Tabs = styled.div`
   gap: 10px;
 `;
 
-const Tab = styled.span<{ isActive: boolean }>`
+const Tab = styled.span<{ isActive?: boolean }>`
   text-align: center;
   text-transform: uppercase;
   font-size: 12px;
@@ -157,6 +166,10 @@ interface PriceData {
   };
 }
 
+interface ContextInterface {
+  coinId: string;
+}
+
 const Coin = () => {
   const { coinId } = useParams();
   const { state } = useLocation() as LocationInterface;
@@ -211,6 +224,7 @@ const Coin = () => {
   //   onLoadCoinInfo();
   //   onLoadCoinPrice();
   // }, []);
+
   return (
     <Container>
       <Header>
@@ -253,7 +267,10 @@ const Coin = () => {
           <Link to={`/${coinId}/chart`}>Chart</Link>
         </Tab>
       </Tabs>
-      <Outlet />
+      <Tab>
+        <Link to={`/`}>Back</Link>
+      </Tab>
+      <Outlet context={coinId} />
       {/* <Routes>
         <Route path={`/chart`} element={<Chart />} />
         <Route path={"/price"} element={<Price />} />
@@ -264,6 +281,9 @@ const Coin = () => {
 
 export default Coin;
 
+export const useCoinId = () => {
+  return useOutletContext<ContextInterface>();
+};
 /*
 
 useMatch("params/url ")
@@ -283,7 +303,7 @@ URL 을 통해서 원하는 페이지로 직접 연결을 할 수 있다.
 
  Outlet 으로 렌더링 하길 원치 않는다면 
 
- 1. 상위 컴포넌트 내부에 
+ 상위 컴포넌트 내부에 
       <Routes>
         <Route path={`/chart`} element={<Chart />} />
         <Route path={"/price"} element={<Price />} />
@@ -294,5 +314,14 @@ https://reactrouter.com/docs/en/v6/getting-started/overview#nested-routes
 
 
 
+Outlet을 사용 하는 경우 props는 기존의 방식으로 내려 줄 수 없음
+context 라는 props ?를 만들고 내부 배열에 내려 줄 요소를 넣어줌
+만약 상태를 넣는 경우 상태와 상태변경함수를 함께 내려줘야 함
+그리고 하위 컴포넌트에서는 useOutletContext 훅을 통해서 전달 한 데이터를 사용 할 수 있음 
+ const coinId = useOutletContext();
+
+
+ Outlet이 아닌  Routes 와 그 하위 Route로 한다면 일반적인 props와 동일하게 내려 줄 수 있다.
+ 
 
 */
