@@ -4,14 +4,29 @@ import { useOutletContext, useParams } from "react-router-dom";
 import { fetchCoinHistory } from "../api";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { useCoinId } from "./Coin";
+import ApexChart from "react-apexcharts";
+import Price from "./Price";
+
+interface coinHistoryInterface {
+  close: string;
+  high: string;
+  low: string;
+  market_cap: number;
+  open: string;
+  time_close: number;
+  time_open: number;
+  volume: string;
+}
 
 const Chart = () => {
   // const coinId = useOutletContext();
   const { coinId } = useCoinId();
-  console.log(coinId);
-  const { isLoading, data } = useQuery(["coinHistory", coinId], () => fetchCoinHistory(coinId));
 
-  console.log(data);
+  const { isLoading, data } = useQuery<coinHistoryInterface[]>(["coinHistory", coinId], () =>
+    fetchCoinHistory(coinId)
+  );
+
+  console.log(data?.map((coinInfo) => Number(coinInfo.close)));
   // useEffect(() => {
   //   const endDate = Math.floor(Date.now() / 1000);
   //   const startDate = endDate - 60 * 60 * 23;
@@ -31,6 +46,42 @@ const Chart = () => {
   return (
     <div>
       <div> CHART </div>
+      <ApexChart
+        type="line"
+        series={[
+          {
+            data: data?.map((coinInfo) => Number(coinInfo.close)) as number[],
+            // as 를 사용한 이유는?
+            // Number로 데이터 타입을 변경해줬으나, Number[] || undefined가 나와서 as를 통해 타입을 고정시킴
+          },
+        ]}
+        options={{
+          theme: {
+            mode: "dark",
+          },
+          chart: {
+            height: 300,
+            width: 500,
+            toolbar: {
+              show: false,
+            },
+            background: "transparent",
+          },
+          grid: { show: false },
+          stroke: {
+            curve: "smooth",
+            width: 4,
+          },
+          yaxis: {
+            show: false,
+          },
+          xaxis: {
+            axisBorder: { show: false },
+            axisTicks: { show: false },
+            labels: { show: false },
+          },
+        }}
+      />
     </div>
   );
 };

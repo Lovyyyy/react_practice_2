@@ -270,7 +270,7 @@ const Coin = () => {
       <Tab>
         <Link to={`/`}>Back</Link>
       </Tab>
-      <Outlet context={coinId} />
+      <Outlet context={{ coinId }} />
       {/* <Routes>
         <Route path={`/chart`} element={<Chart />} />
         <Route path={"/price"} element={<Price />} />
