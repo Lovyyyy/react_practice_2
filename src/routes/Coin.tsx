@@ -132,7 +132,7 @@ Object.values(temp1.data).map(data => typeof data).join()
 
 */
 
-interface PriceData {
+export interface PriceData {
   id: string;
   name: string;
   symbol: string;
@@ -168,6 +168,7 @@ interface PriceData {
 
 interface ContextInterface {
   coinId: string;
+  data: PriceData;
 }
 
 const Coin = () => {
@@ -270,7 +271,7 @@ const Coin = () => {
       <Tab>
         <Link to={`/`}>Back</Link>
       </Tab>
-      <Outlet context={{ coinId }} />
+      <Outlet context={{ coinId, data: priceData }} />
       {/* <Routes>
         <Route path={`/chart`} element={<Chart />} />
         <Route path={"/price"} element={<Price />} />
@@ -281,9 +282,10 @@ const Coin = () => {
 
 export default Coin;
 
-export const useCoinId = () => {
+export const useCoinData = () => {
   return useOutletContext<ContextInterface>();
 };
+
 /*
 
 useMatch("params/url ")

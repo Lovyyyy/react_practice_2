@@ -1,9 +1,9 @@
 > USING TYPESCRIPT / REACT PRACTICE
 >
-> > TypeScript
-> > Styled-Components
-> > React-Route-Dom (Nested-Routes)
-> > React-Queary
+> > TypeScript  
+> > Styled-Components  
+> > React-Route-Dom (Nested-Routes)  
+> > React-Queary  
 > > APEXCHART
 >
 > React-Route-Dom (Nested-Routes)

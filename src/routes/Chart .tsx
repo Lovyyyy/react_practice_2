@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useOutletContext, useParams } from "react-router-dom";
 import { fetchCoinHistory } from "../api";
 import axios, { AxiosError, AxiosResponse } from "axios";
-import { useCoinId } from "./Coin";
+import { useCoinData } from "./Coin";
 import ApexChart from "react-apexcharts";
 import Price from "./Price";
 
@@ -20,7 +20,7 @@ interface coinHistoryInterface {
 
 const Chart = () => {
   // const coinId = useOutletContext();
-  const { coinId } = useCoinId();
+  const { coinId } = useCoinData();
 
   const { isLoading, data } = useQuery<coinHistoryInterface[]>(["coinHistory", coinId], () =>
     fetchCoinHistory(coinId)
