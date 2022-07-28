@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCoins } from "../api";
+import { RouterInterface } from "./Router";
 
 const Title = styled.h1`
   font-size: 48px;
@@ -29,7 +30,7 @@ const Header = styled.header`
 const CoinsList = styled.ul``;
 
 const Coin = styled.li`
-  background-color: white;
+  background-color: ${(props) => props.theme.tabColor};
   color: ${(props) => props.theme.textColor};
   height: 40px;
   padding: 0 15px 0 15px;
@@ -64,7 +65,7 @@ interface CoinInterface {
   type: string;
 }
 
-const Coins = () => {
+const Coins = ({ toModifiedTheme }: RouterInterface) => {
   const { isLoading, data } = useQuery<CoinInterface[]>(["allCoins"], fetchCoins);
 
   console.log(data);
@@ -93,6 +94,7 @@ const Coins = () => {
     <Container>
       <Header>
         <Title> COINS </Title>
+        <button onClick={toModifiedTheme}> Toggle </button>
       </Header>
       {isLoading ? (
         <div>Loading...</div>

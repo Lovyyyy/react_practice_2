@@ -20,13 +20,12 @@ interface coinHistoryInterface {
 
 const Chart = () => {
   // const coinId = useOutletContext();
-  const { coinId } = useCoinData();
+  const { coinId, isDark } = useCoinData();
 
   const { isLoading, data } = useQuery<coinHistoryInterface[]>(["coinHistory", coinId], () =>
     fetchCoinHistory(coinId)
   );
 
-  console.log(data?.map((coinInfo) => Number(coinInfo.close)));
   // useEffect(() => {
   //   const endDate = Math.floor(Date.now() / 1000);
   //   const startDate = endDate - 60 * 60 * 23;
@@ -57,7 +56,7 @@ const Chart = () => {
         ]}
         options={{
           theme: {
-            mode: "dark",
+            mode: isDark ? "dark" : "light",
           },
           chart: {
             height: 300,

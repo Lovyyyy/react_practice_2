@@ -15,6 +15,7 @@ import {
 import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCoinInfo, fetchCoinPrice } from "../api";
+import { RouterInterface } from "./Router";
 
 const Title = styled.h1`
   font-size: 48px;
@@ -169,9 +170,10 @@ export interface PriceData {
 interface ContextInterface {
   coinId: string;
   data: PriceData;
+  isDark: boolean;
 }
 
-const Coin = () => {
+const Coin = ({ isDark }: RouterInterface) => {
   const { coinId } = useParams();
   const { state } = useLocation() as LocationInterface;
   // API의 인터페이스를 만들고 state에 저장해주기
@@ -271,7 +273,7 @@ const Coin = () => {
       <Tab>
         <Link to={`/`}>Back</Link>
       </Tab>
-      <Outlet context={{ coinId, data: priceData }} />
+      <Outlet context={{ isDark, coinId, data: priceData }} />
       {/* <Routes>
         <Route path={`/chart`} element={<Chart />} />
         <Route path={"/price"} element={<Price />} />

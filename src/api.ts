@@ -23,6 +23,14 @@ export const fetchCoinHistory = async (coinId?: string) => {
     .then((res) => res.data);
 };
 
+// export const fetchExrate = async () => {
+//   return await axios
+//     .get(
+//       `https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey=IlSb9B7qtD2Z8U0BSRztU7Hsewl9yBPT&searchdate=20220727&data=AP01`
+//     )
+//     .then((res) => res.data);
+// };
+
 /*
 
 async await 는 어떻게 정확히 동작하는지 정리해야겠네요 

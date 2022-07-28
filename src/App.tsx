@@ -1,6 +1,8 @@
 import Router from "./routes/Router";
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { darkTheme, lightTheme } from "./theme";
+import { useState } from "react";
 
 const Globalstyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -75,13 +77,33 @@ a {
 // 음 그건 생각 해볼 문제네요
 
 function App() {
+  const [isDark, setIsDark] = useState(true);
+
+  const toModifiedTheme = () => {
+    setIsDark((boolean) => !boolean);
+  };
+
   return (
     <>
-      <Globalstyle />
-      <ReactQueryDevtools initialIsOpen={false} />
-      <Router />
+      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+        <Globalstyle />
+        <ReactQueryDevtools initialIsOpen={false} />
+        <Router toModifiedTheme={toModifiedTheme} isDark={isDark} />
+      </ThemeProvider>
     </>
   );
 }
 
 export default App;
+
+/*
+
+
+<ThemeProvider> 를 index.tsx 에서 app.tsx로 옮겼다.
+
+왜? 
+왜냐하면 index 에서는 state를 사용 할 수가 없어서요
+그래서 App 으로 옮겨서 상태를 통해 테마색상을 관리해주고 있습니다. 
+
+
+*/
