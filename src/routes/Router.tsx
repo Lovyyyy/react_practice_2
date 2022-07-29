@@ -17,12 +17,15 @@ export interface RouterInterface {
 
 */
 
-const Router = ({ toModifiedTheme, isDark }: RouterInterface) => {
+// const Router = ({ toModifiedTheme, isDark }: RouterInterface) => {
+const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Coins toModifiedTheme={toModifiedTheme} />} />
-        <Route path="/:coinId" element={<Coin isDark={isDark} />}>
+        {/* <Route path="/" element={<Coins toModifiedTheme={toModifiedTheme} />} /> */}
+        <Route path="/" element={<Coins />} />
+        {/* <Route path="/:coinId" element={<Coin isDark={isDark} />}> */}
+        <Route path="/:coinId" element={<Coin />}>
           <Route path="chart" element={<Chart />} />
           <Route path="price" element={<Price />} />
         </Route>

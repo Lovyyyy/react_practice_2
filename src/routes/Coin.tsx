@@ -1,17 +1,4 @@
-import axios from "axios";
-import Price from "./Price";
-import Chart from "./Chart ";
-import { useEffect, useState } from "react";
-import {
-  Route,
-  Routes,
-  useLocation,
-  useMatch,
-  useParams,
-  Outlet,
-  Link,
-  useOutletContext,
-} from "react-router-dom";
+import { useLocation, useMatch, useParams, Outlet, Link, useOutletContext } from "react-router-dom";
 import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCoinInfo, fetchCoinPrice } from "../api";
@@ -170,7 +157,7 @@ export interface PriceData {
 interface ContextInterface {
   coinId: string;
   data: PriceData;
-  isDark: boolean;
+  // isDark: boolean;
 }
 
 const Coin = ({ isDark }: RouterInterface) => {
@@ -273,7 +260,8 @@ const Coin = ({ isDark }: RouterInterface) => {
       <Tab>
         <Link to={`/`}>Back</Link>
       </Tab>
-      <Outlet context={{ isDark, coinId, data: priceData }} />
+      {/* <Outlet context={{ isDark, coinId, data: priceData }} /> */}
+      <Outlet context={{ coinId, data: priceData }} />
       {/* <Routes>
         <Route path={`/chart`} element={<Chart />} />
         <Route path={"/price"} element={<Price />} />

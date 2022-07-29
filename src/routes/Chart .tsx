@@ -1,11 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
-import { useOutletContext, useParams } from "react-router-dom";
+
 import { fetchCoinHistory } from "../api";
-import axios, { AxiosError, AxiosResponse } from "axios";
+
 import { useCoinData } from "./Coin";
 import ApexChart from "react-apexcharts";
-import Price from "./Price";
+
+import { useRecoilValue } from "recoil";
+import { isDarkAtom } from "../atom";
 
 interface coinHistoryInterface {
   close: string;
@@ -19,9 +20,9 @@ interface coinHistoryInterface {
 }
 
 const Chart = () => {
-  // const coinId = useOutletContext();
-  const { coinId, isDark } = useCoinData();
-
+  // const { coinId, isDark } = useCoinData();
+  const isDark = useRecoilValue(isDarkAtom);
+  const { coinId } = useCoinData();
   const { isLoading, data } = useQuery<coinHistoryInterface[]>(["coinHistory", coinId], () =>
     fetchCoinHistory(coinId)
   );

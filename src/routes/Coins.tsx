@@ -5,6 +5,8 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCoins } from "../api";
 import { RouterInterface } from "./Router";
+import { useSetRecoilState } from "recoil";
+import { isDarkAtom } from "../atom";
 
 const Title = styled.h1`
   font-size: 48px;
@@ -65,9 +67,10 @@ interface CoinInterface {
   type: string;
 }
 
-const Coins = ({ toModifiedTheme }: RouterInterface) => {
+// const Coins = ({ toModifiedTheme }: RouterInterface) => {
+const Coins = () => {
   const { isLoading, data } = useQuery<CoinInterface[]>(["allCoins"], fetchCoins);
-
+  const setIsDark = useSetRecoilState(isDarkAtom);
   console.log(data);
 
   /*
@@ -94,7 +97,7 @@ const Coins = ({ toModifiedTheme }: RouterInterface) => {
     <Container>
       <Header>
         <Title> COINS </Title>
-        <button onClick={toModifiedTheme}> Toggle </button>
+        <button onClick={() => setIsDark((prev) => !prev)}> Toggle </button>
       </Header>
       {isLoading ? (
         <div>Loading...</div>

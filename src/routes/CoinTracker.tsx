@@ -1,10 +1,10 @@
-import Router from "./routes/Router";
+import Router from "./Router";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { darkTheme, lightTheme } from "./theme";
+import { darkTheme, lightTheme } from "../theme";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
-import { isDarkAtom } from "./atom";
+import { isDarkAtom } from "../atom";
 
 const Globalstyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -72,24 +72,30 @@ a {
 }
 `;
 
-function App() {
+// styled-rest 라이브러리를 설치 후 <Reset /> 컴포넌트를 통해서도 사용 가능함
+// 구글 폰트 및 세부설정 몇 가지를 제외하고는 reset의 초기값  코드가 styled-reset 라이브러리에 있음
+// 굳이 라이브러리를 사용하지 않아도 괜찮은 부분은 사용 없이 처리가 괜찮은것 같다
+// 왜 괜찮은데?
+// 음 그건 생각 해볼 문제네요
+
+function CoinTracker() {
   const isDark = useRecoilValue(isDarkAtom);
   return (
     <>
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
         <Globalstyle />
         <ReactQueryDevtools initialIsOpen={false} />
+        <Router />
       </ThemeProvider>
     </>
   );
 }
 
-export default App;
+export default CoinTracker;
 
 /*
 
 
-<
-
+이걸 꺼내고 App으로 변경하시라~ 
 
 */
