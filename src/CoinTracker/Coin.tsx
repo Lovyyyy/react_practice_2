@@ -1,7 +1,7 @@
 import { useLocation, useMatch, useParams, Outlet, Link, useOutletContext } from "react-router-dom";
 import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
-import { fetchCoinInfo, fetchCoinPrice } from "../api";
+import { fetchCoinInfo, fetchCoinPrice } from "./api";
 import { RouterInterface } from "./Router";
 
 const Title = styled.h1`

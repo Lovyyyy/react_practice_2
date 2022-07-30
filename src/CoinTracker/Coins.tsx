@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
-import { fetchCoins } from "../api";
+import { fetchCoins } from "./api";
 import { RouterInterface } from "./Router";
 import { useSetRecoilState } from "recoil";
 import { isDarkAtom } from "../atom";

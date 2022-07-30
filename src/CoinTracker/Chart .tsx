@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { fetchCoinHistory } from "../api";
+import { fetchCoinHistory } from "./api";
 
 import { useCoinData } from "./Coin";
 import ApexChart from "react-apexcharts";

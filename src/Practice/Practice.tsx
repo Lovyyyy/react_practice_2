@@ -1,7 +1,7 @@
-import React from "react";
-import Count from "./components/State";
-import Circle from "./components/Props";
-import Form from "./components/Form";
+// import React from "react";
+// import Count from "./State";
+// import Circle from "./Props";
+// import Form from "./Form";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -16,11 +16,11 @@ function Bpp() {
       <Wrapper>
         <Title> HELLO WORLD </Title>
 
-        <Circle text="text, bgColor" bgColor="cornflowerblue" />
+        {/* <Circle text="text, bgColor" bgColor="cornflowerblue" />
         <Circle text="text,bgColor,borderColor" bgColor="cyan" borderColor="cornflowerblue" />
         <Circle />
         <Count />
-        <Form />
+        <Form /> */}
       </Wrapper>
     </div>
   );
